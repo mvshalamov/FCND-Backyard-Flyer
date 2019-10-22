@@ -77,6 +77,12 @@ class BackyardFlyer(Drone):
             self.arming_transition()
         elif self.flight_state == States.ARMING:
             if self.armed:
+                self.all_waypoints = self.calculate_box()
+                self.waypoint_transition()
+        elif self.flight_state == States.WAYPOINT:
+            if len(self.all_waypoints) > 0:
+                self.waypoint_transition()
+            else:
                 self.takeoff_transition()
         elif self.flight_state == States.DISARMING:
             if not self.armed:
@@ -87,7 +93,8 @@ class BackyardFlyer(Drone):
         
         1. Return waypoints to fly a box
         """
-        print('calculate')
+        local_waypoints = [[10.0, 0.0, 3.0], [10.0, 10.0, 3.0], [0.0, 10.0, 3.0], [0.0, 0.0, 3.0]]
+        return local_waypoints
 
     def arming_transition(self):
         """TODO: Fill out this method
@@ -126,9 +133,8 @@ class BackyardFlyer(Drone):
         1. Command the next waypoint position
         2. Transition to WAYPOINT state
         """
-        # print("landing transition")
-        # self.land()
-        # self.flight_phase = States.LANDING
+        position = self.all_waypoints.pop(0)
+        
 
     def landing_transition(self):
         """TODO: Fill out this method
