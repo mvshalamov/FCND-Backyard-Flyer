@@ -135,6 +135,7 @@ class BackyardFlyer(Drone):
         """
         position = self.all_waypoints.pop(0)
         
+        
 
     def landing_transition(self):
         """TODO: Fill out this method
