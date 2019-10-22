@@ -78,7 +78,7 @@ class BackyardFlyer(Drone):
         elif self.flight_state == States.ARMING:
             if self.armed:
                 self.all_waypoints = self.calculate_box()
-                self.waypoint_transition()
+                self.takeoff_transition()
         elif self.flight_state == States.WAYPOINT:
             if len(self.all_waypoints) > 0:
                 self.waypoint_transition()
@@ -125,7 +125,8 @@ class BackyardFlyer(Drone):
         target_altitude = 10.0
         self.target_position[2] = target_altitude
         self.takeoff(target_altitude)
-        self.flight_state = States.TAKEOFF
+        # self.flight_state = States.TAKEOFF
+        self.waypoint_transition()
 
     def waypoint_transition(self):
         """TODO: Fill out this method
@@ -133,9 +134,10 @@ class BackyardFlyer(Drone):
         1. Command the next waypoint position
         2. Transition to WAYPOINT state
         """
-        position = self.all_waypoints.pop(0)
-        
-        
+        self.target_position = self.all_waypoints.pop(0)
+        print('target position', self.target_position)
+        self.cmd_position(self.target_position[0], self.target_position[1], self.target_position[2], 0.0)
+        self.flight_state = States.WAYPOINT
 
     def landing_transition(self):
         """TODO: Fill out this method
